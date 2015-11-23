@@ -20,10 +20,10 @@ var Player = function (name, level, gold, maxHealth, currentHealth, damage, armo
 var Monster = function () {
     this.name = "Monster";
     this.currentHealth = 10;
-    this.maxHealth = 10;
+    this.maxHealth = 20;
     this.minDamage = 3;
     this.maxDamage = 6;
-    this.armor = 2;
+    this.armor = 5;
 }
 
 $().ready(function () {
