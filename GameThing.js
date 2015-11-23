@@ -7,27 +7,45 @@ var monsterNames = ["goblin", "snake", "dog", "chicken"];
 var roll;
 var roamingTimer;
 
-var Player = function (name, level, gold, maxHealth, currentHealth, damage, armor) {
+var Player = function (name, level, gold, maxHealth, currentHealth, damageMin, damageMax, armor) {
     this.name = name;
     this.level = level;
     this.gold = gold;
     this.maxHealth = maxHealth;
     this.currentHealth = currentHealth;
-    this.damage = damage;
+    this.minDamage = damageMin;
+    this.maxDamage = damageMax
     this.armor = armor;
 };
 
-var Monster = function () {
-    this.name = "Monster";
-    this.currentHealth = 10;
-    this.maxHealth = 20;
-    this.minDamage = 3;
-    this.maxDamage = 6;
-    this.armor = 5;
+var Monster = function (name) {
+    this.name = name;
+    this.currentHealth = Math.floor(Math.random() * 5 + 6);
+    this.maxHealth = this.currentHealth;
+    this.minDamage = Math.floor(Math.random() * 3 + 1);
+    this.maxDamage = this.minDamage + Math.floor(Math.random() * 3 + 1);
+    this.damageRoll = Math.floor(Math.random() * this.maxDamage + this.minDamage);
+    this.armor = 2;
+};
+
+Monster.prototype.getDamage = function() {
+    var damage = (Math.floor(Math.random() * this.maxDamage + 1));
+    if (damage < this.minDamage) {
+        damage = this.minDamage;
+    }
+    return damage;
+};
+
+Player.prototype.getDamage = function () {
+    var damage = (Math.floor(Math.random() * this.maxDamage + 1));
+    if (damage < this.minDamage) {
+        damage = this.minDamage;
+    }
+    return damage;
 }
 
 $().ready(function () {
-    player = new Player("Johnny", 1, 100, 50, 50, 5, 5);
+    player = new Player("Johnny", 1, 100, 50, 50, 5, 10, 5);
     displayGameText();
     updateHtmlElements();
     var devTimer = setInterval (devStuff, 5000);
@@ -47,15 +65,41 @@ $().ready(function () {
 
 
 var combatStuff = function () {
+    var monster = new Monster(monsterNames[Math.floor((Math.random() * monsterNames.length))])
     var combatCounter = 0;
-    updateGameText("You encounter a " + monsterNames[Math.floor((Math.random() * monsterNames.length))] + "<br/>");
+    var holdStuff;
+    var dead = false;
+    var turn = 1;
+    updateGameText("You encounter a " + monster.name + "<br/>");
     var combat = setInterval(function() {
-        if (combatCounter == 1) {
-            alert("1");
+        if (monster.currentHealth <= 0) {
+            gold = Math.floor(Math.random() * 10 + 1);
+            updateGameText("The " + monster.name + " is dead! You find [" + gold + "] gold.<br/>");
+            player.changeGold(gold);
+            dead = true;
+            clearInterval(combat);
+            roamingTimer = setInterval(wanderAround, 2000);
+        } else {
+            if (combatCounter == 1) {
+                updateGameText("The " + monster.name + " snarls at you menacingly.<br/>")
+            }
+            if (combatCounter > 1) {
+                if (turn == 1) {
+                    holdStuff = player.getDamage();
+                    updateGameText("You hit the " + monster.name + " for [" + holdStuff + "] damage.<br/>");
+                    monster.currentHealth -= holdStuff;
+                    turn = 2;
+                } else {
+                    holdStuff = monster.getDamage();
+                    updateGameText("The " + monster.name + " hits you for [" + holdStuff + "] damage.<br/>");
+                    player.currentHealth -= holdStuff;
+                    turn = 1;
+                }
+            }
         }
+        updateHtmlElements();
         combatCounter++;
-    }, 1000);
-
+    }, 2000);
 }
 
 var progressBar = function () {
@@ -100,7 +144,7 @@ var updateHtmlElements = function() {
     $('#level').html("Level: " + player.level);
     $('#gold').html("Gold: " + player.gold);
     $('#health').html("Health: " + player.currentHealth + "/" + player.maxHealth);
-    $('#damage').html("Damage: " + player.damage);
+    $('#damage').html("Damage: " + player.minDamage + "-" + player.maxDamage);
     $('#armor').html("Armor: " + player.armor);
     $('#terminal').css('font-family', 'sans-serif');
     healthBarUpdate();
@@ -125,15 +169,17 @@ var wanderAround = function () {
             updateGameText("You wander around not doing much<br/>");
             break;
         case (roll > 50 && roll < 75):
-            gold = Math.floor(Math.random() * 10 + 1)
+            gold = Math.floor(Math.random() * 10 + 1);
             updateGameText("You find [" + gold + "] gold!<br/>");
             $('#gold').html("Gold: " + player.gold);
             player.changeGold(gold);
             break;
         case (roll > 75):
-            var damage = Math.floor(Math.random() * 10 + 1)
-            updateGameText("A snake bites you for [" + damage + "] and stufffff<br/>");
-            player.changeHealth(-damage);
+            //var damage = Math.floor(Math.random() * 10 + 1);
+            //updateGameText("A snake bites you for [" + damage + "] and stufffff<br/>");
+            //player.changeHealth(-damage);
+            clearInterval(roamingTimer);
+            combatStuff();
             break;
     };
     updateHtmlElements();
