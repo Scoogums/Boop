@@ -1,8 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<br lang="en">
 <head>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script src="JS/GameThing.js"></script>
+    <script src="JS/PlayerAndMonster.js"></script>
+    <script src="JS/Combat.js"></script>
+    <script src="JS/Explore.js"></script>
+    <script src="JS/UpdateUI.js"></script>
+    <script src="JS/Equipment.js"></script>
+    <script src="JS/playerInventory.js"></script>
+    <script src="JS/devCommands.js"></script>
+    <script src="JS/lootDrops.js"></script>
+    <script src="JS/town.js"></script>
     <style>
         body {
             background-color: navajowhite;
@@ -18,7 +27,8 @@
         }
         #name, #level, #gold, #health, #armor, #damage {
             color: black;
-            padding: 2px;
+            padding: 0px;
+            text-align: center;
         }
         #gameText {
             text-align: center;
@@ -32,6 +42,11 @@
             margin: auto;
             width: 100%;
             padding: 10px;
+        }
+        #healthBarPosition {
+            text-align: center;
+            margin: auto;
+            width: 100%;
         }
         #devStuff {
             margin: auto;
@@ -99,7 +114,22 @@
             width: 30%;
             padding: 5px;
         }
+        #inventoryList, #equippedList {
+            width: 300px;
+            border: 10px;
+            border-radius: 10px;
 
+        }
+        h2 {
+            text-align: center;
+        }
+        #inventory {
+            text-align: center;
+            margin: auto;
+        }
+        #shopStuff {
+            text-align: center;
+        }
     </style>
     <meta charset="UTF-8">
     <title>An adventure game thing</title>
@@ -107,14 +137,45 @@
 <h1>Woof</h1>
 <div id = "gameText"></div>
 <div id = "lol"><progress id="progressTest" max=100 value=5>0%</progress></div>
-<p id="name"></p>
-<p id="level"></p>
+<p id="name"></p> <p id="level"></p>
 <p id="gold"></p>
 <p id="health"></p>
+<div id="healthBarPosition">
 <progress id="healthBar" max=100 value=0>0%</progress>
+</div>
 <p id="armor"></p>
 <p id="damage"></p>
-<div id = "buttons"><button id="startButton">OK</button><button id="stopButton">Cancel</button><button id="fightTest">Fight Test</button></div>
-<p id ="devStuff"></p>
+<div id = "buttons"><button id="startButton">Go Exploring</button><button id="stopButton">Return to town</button>
+</div>
+<div id ="inventory">
+Equipment
+<select id = "equippedList">
+</select>
+</br>
+</br>Inventory
+<select id = "inventoryList">
+</select>
+    <button id="equipItem">Equip</button>
+    <button id="sellItem">Sell</button>
+    <h2 id ="sortInventory">Sort Inventory</h2>
+    <button id="sortButtonDamageLow">Lowest Damage (max)</button>
+    <button id="sortButtonDamageHigh">Highest Damage (max)</button>
+    <button id="sortButtonPriceLow">Lowest Price</button>
+    <button id="sortButtonPriceHigh">Highest Price</button>
+    <button id="sortButtonRarityLow">Lowest Rarity</button>
+    <button id="sortButtonRarityHigh">Highest Rarity</button>
+    </br>
+</div>
+<div id ="shopStuff">
+<h2 id ="townShop">Shop</h2>
+For Sale
+<select id = "shopList">
+</select>
+<button id="buyItem">Buy</button>
+</div>
+<h2 id ="clickToShow">Click here to show Dev Tools</h2>
+<div id ="devStuff"><button id="fightTest">Fight Test</button>
+    <button id="generateItem">Generate Random Item</button>
+    <button id="generateUniqueItem">Generate Unique Item</button></div>
 </body>
 </html>
