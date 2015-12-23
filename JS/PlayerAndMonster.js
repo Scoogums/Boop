@@ -34,11 +34,7 @@ Monster.prototype = new gameObject();
 
 // Calculates damage
 gameObject.prototype.getDamage = function () {
-    var damage = calculateRandomValue(this.maxDamage, 1);
-    if (damage < this.minDamage) {
-        damage = this.minDamage;
-    }
-    return damage;
+    return Math.floor(Math.random() * (this.maxDamage+1-this.minDamage)) + this.minDamage;
 };
 
 // Changes player gold.

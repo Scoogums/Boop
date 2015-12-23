@@ -59,10 +59,16 @@ var updateHtmlElements = function() {
     }
     for (var x = 0;x<playerInventory.length;x++) {
         var inventoryListItem = document.createElement("option");
-        if (playerInventory[x].rarity == "Unique") {
-            inventoryListItem.text = "[" + playerInventory[x].name + "]" + " [" + playerInventory[x].minDamage + "-" + playerInventory[x].maxDamage + "] [Unique] [G:" + playerInventory[x].goldValue + "]";
+        if (playerInventory[x] instanceof armor) {
+            var inventoryListItem = document.createElement("option");
+            inventoryListItem.text = "[" + playerInventory[x].armorType + "][" + playerInventory[x].name + "] [" + playerInventory[x].armorValue + "] [" + playerInventory[x].rarity.charAt(0) + "] [G:" + playerInventory[x].goldValue + "]";
+            inventoryListItem.value = x;
         } else {
-            inventoryListItem.text = "[" + playerInventory[x].name + "]" + " [" + playerInventory[x].minDamage + "-" + playerInventory[x].maxDamage + "] [" + playerInventory[x].rarity.charAt(0) + "] [G:" + playerInventory[x].goldValue + "]";
+            if (playerInventory[x].rarity == "Unique") {
+                inventoryListItem.text = "[" + playerInventory[x].weaponType + "][" + playerInventory[x].name + "]" + " [" + playerInventory[x].minDamage + "-" + playerInventory[x].maxDamage + "] [Unique] [G:" + playerInventory[x].goldValue + "]";
+            } else {
+                inventoryListItem.text = "[" + playerInventory[x].weaponType + "][" + playerInventory[x].name + "]" + " [" + playerInventory[x].minDamage + "-" + playerInventory[x].maxDamage + "] [" + playerInventory[x].rarity.charAt(0) + "] [G:" + playerInventory[x].goldValue + "]";
+            }
         }
         inventoryListItem.value = x;
         $("#inventoryList")[0].add(inventoryListItem);

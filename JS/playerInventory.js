@@ -21,12 +21,8 @@ playerInventory = [];
 playerEquipped = [];
 
 var equipFirstItems = function() {
-    var commonItem = new sword();
-    generateBaseDamage(commonItem, 3, player.level, 1);
-    commonItem.name = generateName("sword", "Common");
-    commonItem.rarity = "Common";
-    commonItem.rarityValue = 1;
-    commonItem.goldValue = generatePrice(2, player.level);
+    var commonItem = new weapon("sword");
+    commonItem.generateEquipmentFixedRarity(1);
     console.log("Generated a weapon called: " + commonItem.name);
     console.log("Min Damage:" + commonItem.minDamage + " Max Damage:" + commonItem.maxDamage);
     console.log("Price:" + commonItem.goldValue + "g Rarity:" + commonItem.rarity);
@@ -41,12 +37,16 @@ var equipItem = function () {
     var inventoryList = document.getElementById("inventoryList");
     var selectedItem = inventoryList.options[inventoryList.selectedIndex].value;
     itemColour = colourByRarity(playerInventory[selectedItem].rarity);
-    updateGameText("You equip a [" + colourText(playerInventory[selectedItem].name, itemColour) + "]");
-    playerInventory.push(playerEquipped[0]);
-    playerEquipped[0] = playerInventory[selectedItem];
-    playerInventory.splice(selectedItem, 1);
-    player.minDamage = playerEquipped[0].minDamage;
-    player.maxDamage = playerEquipped[0].maxDamage;
+    if (playerInventory[selectedItem] instanceof armor) {
+        updateGameText("You can't equip armor yet, sorry!");
+    } else {
+        updateGameText("You equip a [" + colourText(playerInventory[selectedItem].name, itemColour) + "]");
+        playerInventory.push(playerEquipped[0]);
+        playerEquipped[0] = playerInventory[selectedItem];
+        playerInventory.splice(selectedItem, 1);
+        player.minDamage = playerEquipped[0].minDamage;
+        player.maxDamage = playerEquipped[0].maxDamage;
+    }
 };
 
 var sellItem = function () {

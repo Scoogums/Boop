@@ -35,20 +35,32 @@ function stopTownTimer() {
 
 function shopPopulateList() {
     for (var x = 0;x<shopInventory.length;x++) {
-        var shopListItem = document.createElement("option");
-        shopListItem.text = "[" + shopInventory[x].name + "] [" + shopInventory[x].minDamage + "-" + shopInventory[x].maxDamage + "] [" + shopInventory[x].rarity.charAt(0) + "] [G:" + shopInventory[x].goldValue + "]";
-        shopListItem.value = x;
-        $("#shopList")[0].add(shopListItem);
+        if (shopInventory[x] instanceof armor) {
+            var shopListItem = document.createElement("option");
+            shopListItem.text = "[" + shopInventory[x].armorType + "][" + shopInventory[x].name + "] [" + shopInventory[x].armorValue + "] [" + shopInventory[x].rarity.charAt(0) + "] [" + shopInventory[x].goldValue + "]";
+            shopListItem.value = x;
+            $("#shopList")[0].add(shopListItem);
+        } else {
+            var shopListItem = document.createElement("option");
+            shopListItem.text = "[" + shopInventory[x].weaponType + "][" + shopInventory[x].name + "] [" + shopInventory[x].minDamage + "-" + shopInventory[x].maxDamage + "] [" + shopInventory[x].rarity.charAt(0) + "] [G:" + shopInventory[x].goldValue + "]";
+            shopListItem.value = x;
+            $("#shopList")[0].add(shopListItem);
+        }
     };
 };
 
 function shopCreateCommonItem() {
-    var commonItem = new sword();
-    generateBaseDamage(commonItem, 3, player.level, 1);
-    commonItem.name = generateName("sword", "Common");
-    commonItem.rarity = "Common";
-    commonItem.rarityValue = 1;
-    commonItem.goldValue = generatePrice(2, player.level * 10);
+    var weaponTypes = ["sword", "dagger"];
+    var armorTypes = ["helm", "legs", "chest", "shoulder", "gloves", "boots", "cloak"];
+    var weaponRoll = calculateRandomValue(weaponTypes.length, 0);
+    var armorRoll = calculateRandomValue(armorTypes.length, 0);
+    var commonItem = new weapon(weaponTypes[weaponRoll]);
+    commonItem.generateEquipmentFixedRarity(1);
+    commonItem.goldValue = commonItem.goldValue * 10;
+    shopAddToInventory(commonItem);
+    var commonItem = new armor(armorTypes[armorRoll]);
+    commonItem.generateEquipmentFixedRarity(1);
+    commonItem.goldValue = commonItem.goldValue * 10;
     console.log("Generated a weapon called: " + commonItem.name);
     console.log("Min Damage:" + commonItem.minDamage + " Max Damage:" + commonItem.maxDamage);
     console.log("Price:" + commonItem.goldValue + "g Rarity:" + commonItem.rarity);
