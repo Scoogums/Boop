@@ -15,7 +15,7 @@ var weaponDrop = function (monster) {
         equipmentDrop.generateEquipment();
     }
     if (random == 2) {
-        equipmentDrop = new armor(armorTypes[weaponRoll]);
+        equipmentDrop = new armor(armorTypes[armorRoll]);
         equipmentDrop.generateEquipment();
     }
     addToInventory(equipmentDrop);

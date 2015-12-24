@@ -233,6 +233,8 @@ weapon.prototype.generateBaseStats = function (baseValue, level, modifier) {
 
 armor.prototype.generateBaseStats = function (baseValue, level, modifier) {
     this.armorValue = Math.floor(calculateRandomValue(baseValue, level) * modifier);
+    this.minDamage = 0;
+    this.maxDamage = 0;
 };
 
 weapon.prototype.generateName = function (rarity) {

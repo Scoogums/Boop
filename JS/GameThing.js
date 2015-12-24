@@ -20,6 +20,7 @@ var calculateRandomValue = function (num1, num2) {
 // operations for the buttons.
 $().ready(function () {
     $('#devStuff').hide();
+    $('#inventory').hide();
     $('#stopButton').hide();
     updateGameText("You are in town.")
     player = new Player("Johnny", 50, 50, 5, 10, 5, 1, 100);
@@ -58,6 +59,9 @@ $().ready(function () {
     });
     $('#clickToShow').click(function () {
         $('#devStuff').fadeToggle();
+    });
+    $('#oldInventory').click(function () {
+        $('#inventory').fadeToggle();
     });
     $('#sortButtonDamageLow').click(function () {
         playerInventory.sort(compareDamageLow);

@@ -16,9 +16,59 @@
 // 8 - Ring
 // 9 - Ring
 // 10 - Cloak
+var equipMode = false;
+var sellMode = false;
+
 
 playerInventory = [];
 playerEquipped = [];
+
+$().ready(function () {
+    $('#inventorySell').click(function () {
+        $('#inventoryMessages').text("Sell mode enabled.");
+        sellMode = true;
+        equipMode = false;
+    });
+    $('#inventoryEquip').click(function () {
+        $('#inventoryMessages').text("Equip mode enabled.");
+        equipMode = true;
+        sellMode = false;
+    });
+    $( "#playerInventory" ).click(function() {
+        var selected = $("#playerInventory input:checked").map(function(i,el){return el.name;}).get();
+        console.log(parseInt(selected))
+        if (equipMode == false && sellMode == false) {
+            $('#inventoryMessages').text("Fuck");
+        }
+        if (equipMode == true) {
+            var itemColour;
+            itemColour = colourByRarity(playerInventory[selected].rarity);
+            $('#inventoryMessages').html("You equip a [" + colourText(playerInventory[selected].name, itemColour) + "]");
+            if (playerInventory[selected] instanceof armor) {
+                updateGameText("You can't equip armor yet, sorry!");
+            } else {
+                updateGameText("You equip a [" + colourText(playerInventory[selected].name, itemColour) + "]");
+                playerInventory.push(playerEquipped[0]);
+                playerEquipped[0] = playerInventory[selected];
+                playerInventory.splice(selected, 1);
+                player.minDamage = playerEquipped[0].minDamage;
+                player.maxDamage = playerEquipped[0].maxDamage;
+            }
+            updateHtmlElements();
+        }
+        if (sellMode == true) {
+            var itemColour;
+            itemColour = colourByRarity(playerInventory[selected].rarity);
+            $('#inventoryMessages').html("You sold the [" + colourText(playerInventory[selected].name, itemColour) + "] for [" + colourText(playerInventory[selected].goldValue, "#DAA520") + "] gold.");
+            player.changeGold(playerInventory[selected].goldValue);
+            updateGameText("You sold the [" + colourText(playerInventory[selected].name, itemColour) + " for [" + colourText(playerInventory[selected].goldValue, "#DAA520") + "] gold.");
+            playerInventory.splice(selected, 1);
+            updateHtmlElements();
+        }
+        $('input:checkbox').removeAttr('checked');
+    });
+});
+
 
 var equipFirstItems = function() {
     var commonItem = new weapon("sword");

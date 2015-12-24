@@ -12,6 +12,14 @@
     <script src="JS/devCommands.js"></script>
     <script src="JS/lootDrops.js"></script>
     <script src="JS/town.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+        $(function() {
+            $( document ).tooltip();
+        });
+    </script>
     <style>
         body {
             background-color: navajowhite;
@@ -120,7 +128,7 @@
             border-radius: 10px;
 
         }
-        h2 {
+        h2, #newInventoryButtons {
             text-align: center;
         }
         #inventory {
@@ -130,6 +138,20 @@
         #shopStuff {
             text-align: center;
         }
+        .ui-tooltip {
+            white-space: pre-line;
+        }
+        #playerInventory {
+            text-align: center;
+            border-radius: 25px;
+            border: 2px solid #73AD21;
+            padding: 20px;
+            width: 410px;
+            height: auto;
+
+            margin: auto;
+        }
+        p { margin:0 }
     </style>
     <meta charset="UTF-8">
     <title>An adventure game thing</title>
@@ -147,14 +169,31 @@
 <p id="damage"></p>
 <div id = "buttons"><button id="startButton">Go Exploring</button><button id="stopButton">Return to town</button>
 </div>
+<h2>Inventory</h2>
+<div id="playerInventory">
+</div>
+<div id="newInventoryButtons">
+    </br>
+    <p id="inventoryMessages">Please enable either Equip or Sell Mode</p>
+<button id="inventoryEquip">Equip</button>
+<button id="inventorySell">Sell</button>
+</div>
+<div id ="shopStuff">
+<h2 id ="townShop">Shop</h2>
+For Sale
+<select id = "shopList">
+</select>
+<button id="buyItem">Buy</button>
+</div>
+<h2 id ="oldInventory">Click here to show Old Inventory</h2>
 <div id ="inventory">
-Equipment
-<select id = "equippedList">
-</select>
-</br>
-</br>Inventory
-<select id = "inventoryList">
-</select>
+    Equipment
+    <select id = "equippedList">
+    </select>
+    </br>
+    </br>Inventory
+    <select id = "inventoryList">
+    </select>
     <button id="equipItem">Equip</button>
     <button id="sellItem">Sell</button>
     <h2 id ="sortInventory">Sort Inventory</h2>
@@ -166,16 +205,10 @@ Equipment
     <button id="sortButtonRarityHigh">Highest Rarity</button>
     </br>
 </div>
-<div id ="shopStuff">
-<h2 id ="townShop">Shop</h2>
-For Sale
-<select id = "shopList">
-</select>
-<button id="buyItem">Buy</button>
-</div>
 <h2 id ="clickToShow">Click here to show Dev Tools</h2>
 <div id ="devStuff"><button id="fightTest">Fight Test</button>
     <button id="generateItem">Generate Random Item</button>
-    <button id="generateUniqueItem">Generate Unique Item</button></div>
+    <button id="generateUniqueItem">Generate Unique Item</button>
+</div>
 </body>
 </html>

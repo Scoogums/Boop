@@ -73,6 +73,43 @@ var updateHtmlElements = function() {
         inventoryListItem.value = x;
         $("#inventoryList")[0].add(inventoryListItem);
     }
+    $("#playerInventory").html("");
+    for (var x = 0;x<playerInventory.length;x++) {
+        var colouredSquare = colourText("+", "#00ff00");
+        var colouredMinus = colourText("-", "#ff0000");
+        if (playerInventory[x] instanceof armor) {
+            var armorImage = "armor.png";
+            if (playerInventory[x].armorType == "helm") {
+                armorImage = "helm.png";
+            }
+            if (playerInventory[x].armorType == "legs") {
+                armorImage = "legs.png";
+            }
+            if (playerInventory[x].armorType == "boots") {
+                armorImage = "boots.png";
+            }
+            if (playerInventory[x].armorType == "gloves") {
+                armorImage = "gloves.png";
+            }
+            if (playerInventory[x].armorType == "cloak") {
+                armorImage = "cloak.png";
+            }
+            if (playerInventory[x].armorType == "shoulder") {
+                armorImage = "shoulders.png";
+            }
+            $('#playerInventory').append('<img id="theImg" src="Media/' + armorImage + '" title="' + playerInventory[x].name + '\nRarity: ' + playerInventory[x].rarity +
+                '\nType: ' + playerInventory[x].armorType + '\nArmor Value: ' + playerInventory[x].armorValue +
+                '\nGold Value: ' + playerInventory[x].goldValue + '" height=42" width="42"/> <input type="checkbox" name="' + x + '" value="' + x +'" />' + colouredSquare + '');
+        } else {
+            var weaponImage = "sword.png";
+            if (playerInventory[x].weaponType == "dagger") {
+                weaponImage = "dagger.png";
+            }
+            $('#playerInventory').append('<img id="theImg" src="Media/' + weaponImage + '" title="' + playerInventory[x].name + '\nRarity: ' + playerInventory[x].rarity +
+                '\nType: ' + playerInventory[x].weaponType + '\nMin Damage: ' + playerInventory[x].minDamage +
+                '\nMax Damage: ' + playerInventory[x].maxDamage + '\nGold Value: ' + playerInventory[x].goldValue + '" height=42" width="42"/><input type="checkbox" name="' + x + '" value="' + x +'" />' + colouredMinus + '');
+        }
+    }
 };
 
 function clearLists()
